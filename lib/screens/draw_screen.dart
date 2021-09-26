@@ -28,7 +28,8 @@ class _DrawScreenState extends State<DrawScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: Center(child: Text('Digit Recognizer')),
+        centerTitle: true,
+        title: Text('Digit Recognizer'),
       ),
       body: Column(
         children: [
@@ -40,21 +41,14 @@ class _DrawScreenState extends State<DrawScreen> {
                   child: Column(
                     children: [
                       Text(
-                        "Write As Your Wish !!!",
+                        'MNIST database of handwritten digits',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 30,
                         ),
                       ),
-                      // Text(
-                      //   'MNIST database of handwritten digits',
-                      //   style: TextStyle(
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
-                      // Text(
-                      //   'The digits have been size-normalized and centered in a fixed-size images (28 x 28)',
-                      // ),
+                      Text(
+                        'The digits have been size-normalized and centered in a fixed-size images (28 x 28)',
+                      ),
                     ],
                   ),
                 ),
@@ -64,16 +58,18 @@ class _DrawScreenState extends State<DrawScreen> {
           GestureDetector(
             onPanUpdate: (DragUpdateDetails details){
               Offset _localPosition = details.localPosition;
-              setState(() {
-                _points.add(_localPosition);
-              });
+              if(_localPosition.dx >=0 && _localPosition.dx<= Constants.canvasSize && _localPosition.dy >=0 && _localPosition.dy<= Constants.canvasSize){
+                setState(() {
+                  _points.add(_localPosition);
+                });
+              }
             },
             onPanEnd: (DragEndDetails details){
               _points.add(null);
             },
             child: Container(
-              width: Constants.canvasSize,
-              height: Constants.canvasSize,
+              width: Constants.canvasSize + Constants.borderSize * 2,
+              height: Constants.canvasSize + Constants.borderSize * 2,
               decoration: BoxDecoration(border: Border.all(color: Colors.black,width: Constants.borderSize)),
               child: CustomPaint(
                 painter: DrawingPainter(_points),
